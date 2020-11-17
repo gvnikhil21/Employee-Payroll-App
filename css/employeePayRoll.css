@@ -117,3 +117,22 @@ label{
     border-radius: 50%;
     margin-left: 8px;
 }
+
+.date-setter{
+    width: 100%;
+    padding: 12px;
+    resize: vertical;
+}
+
+select{
+    padding: 12px;
+    width: 20%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font: normal normal 16px Roboto, sans-serif;
+    letter-spacing: 0px;
+    color: #42515f;
+    background-color: transparent;
+    margin-right: 15px;
+}
