@@ -5,6 +5,7 @@
 body{
     margin: 0;
     height: 100%;
+    background-color: #f7f7f7; 
 }
 
 .header-content{
@@ -42,8 +43,7 @@ body{
 }
 
 .form-content{
-    min-height: calc(100%-80px);
-    background-color: #f7f7f7;
+    min-height: calc(100%-80px); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,6 +52,7 @@ body{
 
 .form{
     width: 65%;
+    margin-top: 20px;
     padding: 44px 60px;
     background: white 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #999999;
