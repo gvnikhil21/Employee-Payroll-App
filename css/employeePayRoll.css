@@ -79,7 +79,10 @@ body{
 
 .label{
     min-width: 140px;
-    padding: 12px 12px 12px 0;
+}
+
+label{
+    padding: 12px 24px 12px 0;
     display: inline-block;
 }
 
@@ -95,4 +98,21 @@ body{
     padding: 12px;
     border: 1px solid #BDBDBD;
     resize: vertical;
+}
+
+.profile-radio-content{
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-radio-content > label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile{
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 8px;
 }
