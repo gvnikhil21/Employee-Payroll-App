@@ -7,15 +7,13 @@ body{
     height: 100%;
 }
 
-.header{
-    padding: 15px 30px; 
-    background-color: white;
-}
 .header-content{
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    padding: 15px 30px; 
+    background-color: white;
     border: 0px solid green;
 }
 
@@ -24,6 +22,7 @@ body{
     flex-direction: row;
     align-items: center;
     border: 0px solid green;
+    height: 52px;
 }
 
 .logo-content img{
@@ -32,7 +31,7 @@ body{
 }
 
 .emp-text{
-    font: normal normal bold 20px/20px Montserrat, sans-serif;
+    font: normal normal bold 21px/20px Montserrat, sans-serif;
     letter-spacing: 0px;
     color: #82a70c;
     text-transform: capitalize;
@@ -40,4 +39,60 @@ body{
 
 .emp-payroll{
     color: #42515f;
+}
+
+.form-content{
+    min-height: calc(100%-80px);
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0px solid green;
+}
+
+.form{
+    width: 65%;
+    padding: 44px 60px;
+    background: white 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #999999;
+    border: 1px solid #f5f5f5;
+    border-radius: 8px;
+    opacity: 1;
+}
+
+.form-head{
+    font: normal normal bold 24px/37px Roboto, sans-serif;
+    letter-spacing: 0px;
+    color: #42515f;
+    text-transform: capitalize;
+    opacity: 1;
+    padding-bottom: 20px;
+}
+
+.row-content{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+    border: 0px solid green;
+}
+
+.label{
+    min-width: 140px;
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.text{
+    font-size: 16px;
+    color: #42515f;
+    opacity: 1;
+    font-family: Roboto, sans-serif;
+}
+
+.input{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #BDBDBD;
+    resize: vertical;
 }
