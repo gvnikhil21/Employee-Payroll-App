@@ -23,7 +23,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const save = () => {
     try {
-        createEmployeePayRoll();
+        let employeePayRollData = createEmployeePayRoll();
+        createAndUpdateStorage(employeePayRollData);
     } catch (error) {
         return;
     }
@@ -47,6 +48,17 @@ const createEmployeePayRoll = () => {
     let year = getInputValueById('#year');
     employeePayRollData.startDate = new Date(year, month, day);
     alert(employeePayRollData.toString());
+    return employeePayRollData;
+};
+
+const createAndUpdateStorage = (employeePayRollData) => {
+    let employeePayRollList = JSON.parse(localStorage.getItem("EmployeePayRollList"));
+    if (employeePayRollList != undefined)
+        employeePayRollList.push(employeePayRollData);
+    else
+        employeePayRollList = [employeePayRollData];
+    alert(employeePayRollList.toString());
+    localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
 };
 
 const getInputValueById = (id) => {
