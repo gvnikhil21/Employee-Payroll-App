@@ -1,4 +1,4 @@
-let regexName = RegExp('^[A-Z][a-z]{3,}$');
+let regexName = RegExp('^[A-Z][a-z]{2,}$');
 class EmployeePayRollData {
 
     get id() { return this._id; }
