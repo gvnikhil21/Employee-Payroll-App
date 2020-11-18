@@ -11,11 +11,12 @@ class EmployeePayRollData {
     // constructor
     constructor(...params) {
         this.name = params[0];
-        this.salary = params[1];
+        this.image = params[1];
         this.gender = params[2];
-        this.department = params[3];
-        this.startDate = params[4];
-        this.notes = params[5];
+        this.salary = params[3];
+        this.department = params[4];
+        this.startDate = params[5];
+        this.notes = params[6];
     }
     get name() { return this._name; }
     set name(name) {
@@ -24,6 +25,10 @@ class EmployeePayRollData {
         else
             throw 'Name is Invalid!'
     }
+
+    get image() { return this._image; }
+    set image(image) { this._image = image; }
+
     get salary() { return this._salary; }
     set salary(salary) {
         if (salary > 0)
@@ -47,7 +52,7 @@ class EmployeePayRollData {
             throw 'StartDate is Invalid!'
     }
 
-    get notes() { this._notes = notes; }
+    get notes() { return this._notes; }
     set notes(notes) { this._notes = notes; }
     //methods
     toString() {
@@ -55,17 +60,17 @@ class EmployeePayRollData {
             year: 'numeric', month: 'long', day: 'numeric'
         };
         const empDate = this._startDate == undefined ? "undefined" : this.startDate.toLocaleDateString("en-IN", options);
-        return "name = " + this.name + ", salary = " + this.salary + ", gender = " + this.gender + ", department = " + this.department + ", start-date = " + empDate + ", notes= " + this.notes;
+        return "name = " + this.name + ", image = " + this.image + ", salary = " + this.salary + ", gender = " + this.gender + ", department = " + this.department + ", start-date = " + empDate + ", notes= " + this.notes;
     }
 }
 
 function save() {
     let empName = document.querySelector('#name').value;
     let imageArray = document.querySelectorAll('input[name="profile"]');
-    let image;
+    let empImage;
     for (let i = 0; i < imageArray.length; i++) {
         if (imageArray[i].checked) {
-            image = imageArray[i].value;
+            empImage = imageArray[i].value;
             break;
         }
     }
@@ -86,11 +91,11 @@ function save() {
     let day = document.querySelector('#day').value;
     let month = document.querySelector('#month').value;
     let year = document.querySelector('#year').value;
-    let empSalary = document.querySelector('#salary').value;
     let empStartDate = new Date(year, month, day);
+    let empSalary = document.querySelector('#salary').value;
     let empNotes = document.querySelector('#notes').value;
     try {
-        employeePayRollData = new EmployeePayRollData(empName, empSalary, empGender, empDepartment, empStartDate, empNotes);
+        employeePayRollData = new EmployeePayRollData(empName, empImage, empGender, empSalary, empDepartment, empStartDate, empNotes);
     }
     catch (error) {
         console.error(error);
