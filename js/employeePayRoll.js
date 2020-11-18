@@ -1,10 +1,25 @@
-{
-    let salary = document.querySelector('#salary');
-    let salaryOutput = document.querySelector('#salaryOutput');
+window.addEventListener("DOMContentLoaded", () => {
+    const name = document.querySelector('#name');
+    const textError = document.querySelector('.text-error');
+    name.addEventListener('input', function () {
+        if (name.value.length == 0) {
+            textError.textContent = "";
+            return;
+        }
+        try {
+            (new EmployeePayRollData()).name = name.value;
+            textError.textContent = "";
+        } catch (error) {
+            textError.textContent = error;
+        }
+    });
+
+    const salary = document.querySelector('#salary');
+    const salaryOutput = document.querySelector('#salaryOutput');
     salary.addEventListener('input', function () {
         salaryOutput.textContent = salary.value;
     });
-}
+});
 
 function save() {
     let empName = document.querySelector('#name').value;
