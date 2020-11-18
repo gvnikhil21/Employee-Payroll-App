@@ -192,9 +192,6 @@ select{
     .row-content{
         flex-direction: column;
     }
-    .uploadButton{
-        /* justify-content: flex-start; */
-    }
     .profile-radio-content{
         flex-flow: wrap;
     }
