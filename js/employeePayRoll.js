@@ -65,11 +65,6 @@ const getInputValueById = (id) => {
     return document.querySelector(id).value;
 };
 
-const setTextValue = (property, message) => {
-    let textError = document.querySelector(property);
-    textError.textContent = message;
-};
-
 const getSelectedValues = (property) => {
     let allItems = document.querySelectorAll(property);
     let setItems = new Array();
@@ -78,6 +73,32 @@ const getSelectedValues = (property) => {
             setItems.push(item.value);
     });
     return setItems;
+};
+
+const resetForm = () => {
+    setValue('#name', '');
+    unsetSelectedValues('[name=profile]');
+    unsetSelectedValues('[name=gender]');
+    unsetSelectedValues('.checkbox');
+    setValue('#salary', '');
+    setTextValue('#salaryOutput', getInputValueById('#salary'));
+    setValue('#notes', '');
+    setValue('#day', '');
+    setValue('#month', '');
+    setValue('#year', '');
+}
+
+const unsetSelectedValues = (property) => {
+    let allItems = document.querySelectorAll(property);
+    allItems.forEach(item => item.checked = false);
+};
+
+const setTextValue = (property, message) => {
+    document.querySelector(property).textContent = message;
+};
+
+const setValue = (property, value) => {
+    document.querySelector(property).value = value;
 };
 
 
