@@ -94,7 +94,7 @@ body{
     width: 80%;
     margin: 0 auto;
     overflow: auto;
-    border-spacing: 0px;
+    border-spacing: 0px 3px;
 }
 
 td, th{
