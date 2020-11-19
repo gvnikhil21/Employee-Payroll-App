@@ -116,12 +116,11 @@ label{
 .profile{
     width: 40px;
     border-radius: 50%;
-    margin-left: 8px;
+    margin-left: 5px;
 }
 
 .date-setter{
     width: 100%;
-    padding: 12px;
     resize: vertical;
 }
 
