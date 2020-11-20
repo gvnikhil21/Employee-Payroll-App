@@ -12,10 +12,10 @@ const getEmployeePayRollDataFromStorage = () => {
 };
 
 const createInnerHtml = () => {
-    const headerHtml = "<tr><th></th><th>Name</th><th>Gender</th>" +
-        "<th>Department</th><th>Salary</th><th>Start Date</th><th>Actions</th></tr>";
     if (employeePayRollList.length == 0)
         return;
+    const headerHtml = "<tr><th></th><th>Name</th><th>Gender</th>" +
+        "<th>Department</th><th>Salary</th><th>Start Date</th><th>Actions</th></tr>";
     let innerHtml = `${headerHtml}`;
     for (const employeePayRollData of employeePayRollList) {
         innerHtml = `${innerHtml}
@@ -43,11 +43,12 @@ const getDeptHtml = (deptList) => {
     return deptHtml;
 };
 
-const getDateInFormat = (startDate) => {
-    let date = new Date(startDate);
-    const options = {
-        year: 'numeric', month: 'short', day: 'numeric'
-    };
-    const empDate = date == undefined ? "undefined" : date.toLocaleDateString("en-IN", options);
-    return empDate;
+const remove = (node) => {
+    let employeePayRollData = employeePayRollList.find(empData => empData._id == node.id);
+    if (!employeePayRollData) return;
+    const index = employeePayRollList.map(empData => empData._id).indexOf(employeePayRollData._id);
+    employeePayRollList.splice(index, 1);
+    localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
+    document.querySelector(".emp-count").textContent = employeePayRollList.length;
+    createInnerHtml();
 };

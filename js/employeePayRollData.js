@@ -42,10 +42,7 @@ class EmployeePayRollData {
     set notes(notes) { this._notes = notes; }
     //methods
     toString() {
-        const options = {
-            year: 'numeric', month: 'long', day: 'numeric'
-        };
-        const empDate = this._startDate == undefined ? "undefined" : this.startDate.toLocaleDateString("en-IN", options);
+        const empDate = getDateInFormat(this._startDate);
         return "id = " + this.id + ", name = " + this.name + ", image = " + this.image + ", salary = " + this.salary + ", gender = " + this.gender + ", department = " + this.department + ", start-date = " + empDate + ", notes= " + this.notes;
     }
 }

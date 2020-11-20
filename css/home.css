@@ -94,7 +94,13 @@ body{
     width: 80%;
     margin: 0 auto;
     overflow: auto;
+}
+
+.table{
+    width: 100%;
+    border-collapse: separate;
     border-spacing: 0px 3px;
+    min-width: 800px;
 }
 
 td, th{
