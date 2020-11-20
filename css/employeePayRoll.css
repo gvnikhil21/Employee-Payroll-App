@@ -173,7 +173,7 @@ select{
     text-align: center;
 }
 
-.text-error{
+.text-error,.date-error{
     margin-left: 10px;
     font-size: 12px;
     font-style: italic;

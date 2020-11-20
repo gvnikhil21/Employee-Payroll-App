@@ -12,11 +12,13 @@ const getEmployeePayRollDataFromStorage = () => {
 };
 
 const createInnerHtml = () => {
-    if (employeePayRollList.length == 0)
-        return;
     const headerHtml = "<tr><th></th><th>Name</th><th>Gender</th>" +
         "<th>Department</th><th>Salary</th><th>Start Date</th><th>Actions</th></tr>";
     let innerHtml = `${headerHtml}`;
+    if (employeePayRollList.length == 0) {
+        document.querySelector('#table-display').innerHTML = innerHtml;
+        return;
+    }
     for (const employeePayRollData of employeePayRollList) {
         innerHtml = `${innerHtml}
             <tr>
@@ -51,4 +53,11 @@ const remove = (node) => {
     localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
     document.querySelector(".emp-count").textContent = employeePayRollList.length;
     createInnerHtml();
+};
+
+const update = (node) => {
+    let employeePayRollData = employeePayRollList.find(empData => empData._id == node.id);
+    if (!employeePayRollData) return;
+    localStorage.setItem('editEmp', JSON.stringify(employeePayRollData));
+    window.location.replace("../pages/employeePayRoll.html");
 };

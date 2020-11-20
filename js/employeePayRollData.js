@@ -35,7 +35,7 @@ class EmployeePayRollData {
         if (startDate <= new Date())
             this._startDate = startDate;
         else
-            throw 'StartDate is Invalid!'
+            throw 'StartDate is Invalid!';
     }
 
     get notes() { return this._notes; }
