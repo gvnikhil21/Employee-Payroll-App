@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
             return;
         }
         try {
-            (new EmployeePayRollData()).name = name.value;
+            checkName(name.value);
             setTextValue('.text-error', '');
         } catch (error) {
             setTextValue('.text-error', error);
@@ -22,9 +22,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const date = document.querySelector('.date-setter');
     date.addEventListener('input', function () {
-        const startDate = new Date(getInputValueById('#year'), getInputValueById('#month') - 1, getInputValueById('#day'));
+        const startDate = getDateInFormat(new Date(getInputValueById('#year'), getInputValueById('#month') - 1, getInputValueById('#day')));
         try {
-            (new EmployeePayRollData()).startDate = startDate;
+            checkStartDate(startDate);
             setTextValue('.date-error', "");
         } catch (error) {
             setTextValue('.date-error', error);
@@ -69,8 +69,8 @@ const setSelectedValues = (property, value) => {
 };
 
 const save = (event) => {
-   event.preventDefault();
-   event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     try {
         setEmployeePayRollObject();
         createAndUpdateStorage();
@@ -82,6 +82,7 @@ const save = (event) => {
 };
 
 const setEmployeePayRollObject = () => {
+    if (!isUpdate) employeePayRollObj.id = createNewEmployeeId();
     employeePayRollObj._name = getInputValueById('#name');
     employeePayRollObj._image = getSelectedValues('[name=profile]').pop();
     employeePayRollObj._gender = getSelectedValues('[name=gender]').pop();
@@ -91,52 +92,23 @@ const setEmployeePayRollObject = () => {
     let day = getInputValueById('#day');
     let month = getInputValueById('#month');
     let year = getInputValueById('#year');
-    employeePayRollObj._startDate = new Date(year, month - 1, day);
+    employeePayRollObj._startDate = getDateInFormat(new Date(year, month - 1, day));
 };
 
 const createAndUpdateStorage = () => {
     let employeePayRollList = JSON.parse(localStorage.getItem("EmployeePayRollList"));
     if (employeePayRollList) {
-        let employeePayRollData = employeePayRollList.find(empData => empData._id == employeePayRollObj._id);
+        let employeePayRollData = employeePayRollList.find(empData => empData.id == employeePayRollObj.id);
         if (!employeePayRollData)
-            employeePayRollList.push(createEmployeePayRollData());
+            employeePayRollList.push(employeePayRollObj);
         else {
-            const index = employeePayRollList.map(empData => empData._id).indexOf(employeePayRollData._id);
-            employeePayRollList.splice(index, 1, createEmployeePayRollData(employeePayRollData._id));
+            const index = employeePayRollList.map(empData => empData.id).indexOf(employeePayRollData.id);
+            employeePayRollList.splice(index, 1, employeePayRollObj);
         }
     }
     else
-        employeePayRollList = [createEmployeePayRollData()];
+        employeePayRollList = [employeePayRollObj];
     localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
-};
-
-const createEmployeePayRollData = (id) => {
-    let employeePayRollData = new EmployeePayRollData();
-    if (!id) employeePayRollData.id = createNewEmployeeId();
-    else employeePayRollData.id = id;
-    setEmployeePayRollData(employeePayRollData);
-    return employeePayRollData;
-};
-
-const setEmployeePayRollData = (employeePayRollData) => {
-    try {
-        employeePayRollData.name = employeePayRollObj._name;
-    } catch (error) {
-        setTextValue('.text-error', error);
-        throw error;
-    }
-    employeePayRollData.image = employeePayRollObj._image;
-    employeePayRollData.gender = employeePayRollObj._gender;
-    employeePayRollData.department = employeePayRollObj._department;
-    employeePayRollData.salary = employeePayRollObj._salary;
-    employeePayRollData.notes = employeePayRollObj._notes;
-    try {
-        employeePayRollData.startDate = new Date(employeePayRollObj._startDate);
-    } catch (error) {
-        setTextValue('.date-error', error);
-        throw error;
-    }
-    alert(employeePayRollData.toString());
 };
 
 const getInputValueById = (id) => {
