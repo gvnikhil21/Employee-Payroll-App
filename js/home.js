@@ -71,9 +71,18 @@ const remove = (node) => {
     if (!employeePayRollData) return;
     const index = employeePayRollList.map(empData => empData.id).indexOf(employeePayRollData.id);
     employeePayRollList.splice(index, 1);
-    localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
+    if (site_properties.local_storage.match("true")) {
+        localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
+        createInnerHtml();
+    }
+    else {
+        const deleteURL = site_properties.server_url + employeePayRollData.id.toString();
+        makeServiceCall("DELETE", deleteURL, false)
+            .then(responseText => createInnerHtml())
+            .catch(error => console.log("DELETE Error Status: " + JSON.stringify(error)));
+    }
     document.querySelector(".emp-count").textContent = employeePayRollList.length;
-    createInnerHtml();
+
 };
 
 const update = (node) => {
