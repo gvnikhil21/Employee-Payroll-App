@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const date = document.querySelector('.date-setter');
     date.addEventListener('input', function () {
-        let startDate=null;
+        let startDate = null;
         if (getInputValueById("#year") == "" || getInputValueById("#month") == "" || getInputValueById("#day") == "")
             startDate = new Date(startDate);
         else
@@ -77,12 +77,29 @@ const save = (event) => {
     event.stopPropagation();
     try {
         setEmployeePayRollObject();
-        createAndUpdateStorage();
-        resetForm();
-        window.location.replace(site_properties.home_page);
+        if (site_properties.local_storage.match("true")) {
+            createAndUpdateStorage();
+            resetForm();
+            window.location.replace(site_properties.home_page);
+        }
+        else
+            createOrUpdateEmployeePayRoll();
     } catch (error) {
         return;
     }
+};
+
+const createOrUpdateEmployeePayRoll = () => {
+    let postURL = site_properties.server_url;
+    let methodCall = "POST";
+    makeServiceCall(methodCall, postURL, true, employeePayRollObj)
+        .then(responseText => {
+            resetForm();
+            window.location.replace(site_properties.home_page);
+        })
+        .catch(error => {
+            throw error;
+        });
 };
 
 const setEmployeePayRollObject = () => {
