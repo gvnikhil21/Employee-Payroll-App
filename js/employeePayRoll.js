@@ -22,7 +22,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const date = document.querySelector('.date-setter');
     date.addEventListener('input', function () {
-        const startDate = getDateInFormat(new Date(getInputValueById('#year'), getInputValueById('#month') - 1, getInputValueById('#day')));
+        let startDate=null;
+        if (getInputValueById("#year") == "" || getInputValueById("#month") == "" || getInputValueById("#day") == "")
+            startDate = new Date(startDate);
+        else
+            startDate = getDateInFormat(new Date(getInputValueById('#year'), getInputValueById('#month') - 1, getInputValueById('#day')));
         try {
             checkStartDate(startDate);
             setTextValue('.date-error', "");
@@ -75,7 +79,7 @@ const save = (event) => {
         setEmployeePayRollObject();
         createAndUpdateStorage();
         resetForm();
-        window.location.replace("../pages/home.html");
+        window.location.replace(site_properties.home_page);
     } catch (error) {
         return;
     }
@@ -92,7 +96,10 @@ const setEmployeePayRollObject = () => {
     let day = getInputValueById('#day');
     let month = getInputValueById('#month');
     let year = getInputValueById('#year');
-    employeePayRollObj._startDate = getDateInFormat(new Date(year, month - 1, day));
+    if (day == "" || month == "" || year == "")
+        employeePayRollObj._startDate = null;
+    else
+        employeePayRollObj._startDate = getDateInFormat(new Date(year, month - 1, day));
 };
 
 const createAndUpdateStorage = () => {
