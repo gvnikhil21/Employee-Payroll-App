@@ -22,13 +22,12 @@ const getEmployeePayRollDataFromStorage = () => {
 const getEmployeePayRollDataFromServer = () => {
     makeServiceCall("GET", site_properties.server_url, true)
         .then(responseText => {
-            employeePayRollList = JSON.parse(responseText);
+            employeePayRollListJSON = JSON.parse(responseText);
+            employeePayRollList = employeePayRollListJSON.data;
             processEmployeePayRollDataResponse();
         })
         .catch(error => {
             console.log("GET Error Status: " + JSON.stringify(error));
-            employeePayRollList = [];
-            processEmployeePayRollDataResponse();
         });
 };
 
@@ -43,15 +42,15 @@ const createInnerHtml = () => {
     for (const employeePayRollData of employeePayRollList) {
         innerHtml = `${innerHtml}
             <tr>
-                <td class="profile-image"><img class="profile" src="${employeePayRollData._image}" alt=""></td>
-                <td>${employeePayRollData._name}</td>
-                <td>${employeePayRollData._gender}</td>
-                <td>${getDeptHtml(employeePayRollData._department)}</td>
-                <td>${employeePayRollData._salary}</td>
-                <td>${getDateInFormat(employeePayRollData._startDate)}</td>
+                <td class="profile-image"><img class="profile" src="${employeePayRollData.profilePic}" alt=""></td>
+                <td>${employeePayRollData.name}</td>
+                <td>${employeePayRollData.gender}</td>
+                <td>${getDeptHtml(employeePayRollData.departments)}</td>
+                <td>${employeePayRollData.salary}</td>
+                <td>${getDateInFormat(employeePayRollData.startDate)}</td>
                 <td>
-                    <img id="${employeePayRollData.id}" src="../assets/icons/delete-black-18dp.svg" alt="delete" onclick="remove(this)">
-                    <img id="${employeePayRollData.id}" src="../assets/icons/create-black-18dp.svg" alt="edit" onclick="update(this)">
+                    <img id="${employeePayRollData.employeeId}" src="../assets/icons/delete-black-18dp.svg" alt="delete" onclick="remove(this)">
+                    <img id="${employeePayRollData.employeeId}" src="../assets/icons/create-black-18dp.svg" alt="edit" onclick="update(this)">
                 </td>
             </tr>
             `;
@@ -67,17 +66,17 @@ const getDeptHtml = (deptList) => {
 };
 
 const remove = (node) => {
-    let employeePayRollData = employeePayRollList.find(empData => empData.id == node.id);
+    let employeePayRollData = employeePayRollList.find(empData => empData.employeeId == node.id);
     if (!employeePayRollData) return;
-    const index = employeePayRollList.map(empData => empData.id).indexOf(employeePayRollData.id);
+    const index = employeePayRollList.map(empData => empData.employeeId).indexOf(employeePayRollData.employeeId);
     employeePayRollList.splice(index, 1);
     if (site_properties.local_storage.match("true")) {
         localStorage.setItem("EmployeePayRollList", JSON.stringify(employeePayRollList));
         createInnerHtml();
     }
     else {
-        const deleteURL = site_properties.server_url + employeePayRollData.id.toString();
-        makeServiceCall("DELETE", deleteURL, false)
+        const deleteURL = site_properties.server_url + "delete/" + employeePayRollData.employeeId.toString();
+        makeServiceCall("DELETE", deleteURL, true)
             .then(responseText => createInnerHtml())
             .catch(error => console.log("DELETE Error Status: " + JSON.stringify(error)));
     }
@@ -86,7 +85,7 @@ const remove = (node) => {
 };
 
 const update = (node) => {
-    let employeePayRollData = employeePayRollList.find(empData => empData.id == node.id);
+    let employeePayRollData = employeePayRollList.find(empData => empData.employeeId == node.id);
     if (!employeePayRollData) return;
     localStorage.setItem('editEmp', JSON.stringify(employeePayRollData));
     window.location.replace(site_properties.payroll_page);

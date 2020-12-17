@@ -47,16 +47,22 @@ const checkForUpdate = () => {
 };
 
 const setForm = () => {
-    setValue('#name', employeePayRollObj._name);
-    setSelectedValues('[name=profile]', employeePayRollObj._image);
-    setSelectedValues('[name=gender]', employeePayRollObj._gender);
-    setSelectedValues('.checkbox', employeePayRollObj._department)
-    setValue('#salary', employeePayRollObj._salary);
-    setTextValue('#salaryOutput', employeePayRollObj._salary);
-    setValue('#notes', employeePayRollObj._notes);
-    let date = new Date(employeePayRollObj._startDate);
-    setValue('#day', date.getDate());
-    setValue('#month', date.getMonth() + 1);
+    setValue('#name', employeePayRollObj.name);
+    setSelectedValues('[name=profile]', employeePayRollObj.profilePic);
+    setSelectedValues('[name=gender]', employeePayRollObj.gender);
+    setSelectedValues('.checkbox', employeePayRollObj.departments)
+    setValue('#salary', employeePayRollObj.salary);
+    setTextValue('#salaryOutput', employeePayRollObj.salary);
+    setValue('#notes', employeePayRollObj.note);
+    let date = new Date(employeePayRollObj.startDate);
+    if (date.getDate() < 10)
+        setValue('#day', "0" + date.getDate());
+    else
+        setValue('#day', date.getDate());
+    if (date.getMonth() + 1 < 10)
+        setValue('#month', "0" + date.getMonth());
+    else
+        setValue('#month', date.getMonth() + 1);
     setValue('#year', date.getFullYear());
 };
 
@@ -90,11 +96,11 @@ const save = (event) => {
 };
 
 const createOrUpdateEmployeePayRoll = () => {
-    let postURL = site_properties.server_url;
+    let postURL = site_properties.server_url + "add";
     let methodCall = "POST";
     if (isUpdate) {
         methodCall = "PUT";
-        postURL = postURL + employeePayRollObj.id.toString();
+        postURL = site_properties.server_url + "update/" + employeePayRollObj.employeeId.toString();
     }
     makeServiceCall(methodCall, postURL, true, employeePayRollObj)
         .then(responseText => {
@@ -107,20 +113,19 @@ const createOrUpdateEmployeePayRoll = () => {
 };
 
 const setEmployeePayRollObject = () => {
-    if (!isUpdate) employeePayRollObj.id = createNewEmployeeId();
-    employeePayRollObj._name = getInputValueById('#name');
-    employeePayRollObj._image = getSelectedValues('[name=profile]').pop();
-    employeePayRollObj._gender = getSelectedValues('[name=gender]').pop();
-    employeePayRollObj._department = getSelectedValues('.checkbox');
-    employeePayRollObj._salary = getInputValueById('#salary');
-    employeePayRollObj._notes = getInputValueById('#notes');
+    employeePayRollObj.name = getInputValueById('#name');
+    employeePayRollObj.profilePic = getSelectedValues('[name=profile]').pop();
+    employeePayRollObj.gender = getSelectedValues('[name=gender]').pop();
+    employeePayRollObj.department = getSelectedValues('.checkbox');
+    employeePayRollObj.salary = getInputValueById('#salary');
+    employeePayRollObj.note = getInputValueById('#notes');
     let day = getInputValueById('#day');
     let month = getInputValueById('#month');
     let year = getInputValueById('#year');
     if (day == "" || month == "" || year == "")
-        employeePayRollObj._startDate = null;
+        employeePayRollObj.startDate = null;
     else
-        employeePayRollObj._startDate = getDateInFormat(new Date(year, month - 1, day));
+        employeePayRollObj.startDate = day + " " + month + " " + year;
 };
 
 const createAndUpdateStorage = () => {
@@ -179,9 +184,32 @@ const setValue = (property, value) => {
     document.querySelector(property).value = value;
 };
 
-const createNewEmployeeId = () => {
-    let empId = localStorage.getItem("EmployeeID");
-    empId = !empId ? 1 : (parseInt(empId) + 1).toString();
-    localStorage.setItem("EmployeeID", empId);
-    return empId;
-};
+function demo() {
+    let day = getInputValueById('#day');
+    let month = getInputValueById('#month');
+    let year = getInputValueById('#year');
+    let dateStart;
+    if (day == "" || month == "" || year == "")
+        dateStart = null;
+    else
+        dateStart = day + " " + month + " " + year;
+    let empData = {
+        "name": getInputValueById('#name'),
+        "salary": getInputValueById('#salary'),
+        "gender": getSelectedValues('[name=gender]').pop(),
+        "startDate": dateStart,
+        "note": getInputValueById('#notes'),
+        "profilePic": getSelectedValues('[name=profile]').pop(),
+        "department": getSelectedValues('.checkbox')
+    };
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "http://localhost:8080/employeepayrollservice/add",
+        data: JSON.stringify(empData),
+        datatype: "json",
+        success: function (response) {
+            console.log("response: ", response);
+        }
+    });
+}
